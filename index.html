@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cahier des charges complet pour la création de l'application ND COLOR - Système de gestion des cartes de fidélité pour salon de coiffure. Guide détaillé pour stagiaires développeurs web.">
+    <meta name="keywords" content="cahier des charges, développeur web, formation DWWM, ND COLOR, application web, HTML5, CSS3, JavaScript, Bootstrap">
+    <meta name="author" content="MODE 83 - Centre de Formation">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="robots" content="index, follow">
+
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    
+    <title>Cahier des charges - ND COLOR | Application de gestion de fidélité</title>
+    
+    <!-- Preconnect pour optimiser les performances -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           VARIABLES CSS - THÈME ND COLOR
+           ============================================ */
+        :root {
+            --color-primary: #d4af37;
+            --color-primary-light: #f5d576;
+            --color-primary-dark: #b8941f;
+            --color-secondary: #0a0a0a;
+            --color-dark: #1a1a1a;
+            --color-ivory: #fffff0;
+            --color-offwhite: #faf9f6;
+            --color-glass: rgba(250, 249, 246, 0.08);
+            --color-glass-border: rgba(212, 175, 55, 0.2);
+            --color-bronze: #cd7f32;
+            --color-silver: #c0c0c0;
+            --color-success: #28a745;
+            --color-danger: #dc3545;
+            --color-info: #17a2b8;
+            
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Montserrat', sans-serif;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+            --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
+            
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           RESET ET BASE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            color: var(--color-offwhite);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Skip Link pour Accessibilité */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-primary);
+            color: var(--color-secondary);
+            padding: 1rem 2rem;
+            border-radius: 0 0 8px 8px;
+            z-index: 9999;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top var(--transition-fast);
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* ============================================
+           HEADER PREMIUM
+           ============================================ */
+        .premium-header {
+            background: var(--color-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--color-glass-border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-logo h1 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.1em;
+            margin: 0;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            color: var(--color-primary-light);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        .nav-premium {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-premium .nav-link {
+            color: rgba(250, 249, 246, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+        }
+
+        .nav-premium .nav-link:hover,
+        .nav-premium .nav-link:focus {
+            color: var(--color-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-premium .nav-link.active {
+            color: var(--color-primary);
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero-section {
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--color-primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-glass-border);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--color-offwhite);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: rgba(250, 249, 246, 0.7);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* ============================================
+           SECTIONS
+           ============================================ */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            color: rgba(250, 249, 246, 0.6);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ============================================
+           CARDS PREMIUM
+           ============================================ */
+        .card-premium {
+            background: var(--color-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            height: 100%;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+        }
+
+        .card-premium:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon i {
+            font-size: 1.75rem;
+            color: var(--color-primary);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .card-text {
+            color: rgba(250, 249, 246, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           TABLE OF CONTENTS
+           ============================================ */
+        .toc-container {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .toc-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-list a {
+            color: rgba(250, 249, 246, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all var(--transition-fast);
+        }
+
+        .toc-list a:hover,
+        .toc-list a:focus {
+            color: var(--color-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .toc-list a.active {
+            color: var(--color-primary);
+            background: rgba(212, 175, 55, 0.15);
+            font-weight: 500;
+        }
+
+        .toc-list .toc-number {
+            width: 24px;
+            height: 24px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           CONTENT BLOCKS
+           ============================================ */
+        .content-block {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-block h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .content-block h3 .block-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            color: var(--color-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .content-block h4 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-offwhite);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .content-block p {
+            color: rgba(250, 249, 246, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .content-block ul,
+        .content-block ol {
+            color: rgba(250, 249, 246, 0.8);
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-block li {
+            margin-bottom: 0.5rem;
+        }
+
+        .content-block li::marker {
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           CODE BLOCKS
+           ============================================ */
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-language);
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.875rem;
+            color: var(--color-primary-light);
+            white-space: pre;
+        }
+
+        /* Inline code */
+        code:not(.code-block code) {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--color-primary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.875em;
+        }
+
+        /* ============================================
+           BADGES
+           ============================================ */
+        .badge-premium {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .badge-bronze {
+            background: linear-gradient(135deg, #cd7f32 0%, #e89e5d 100%);
+            color: #2a1810;
+        }
+
+        .badge-silver {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            color: #2a2a2a;
+        }
+
+        .badge-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f5d576 100%);
+            color: #2a2410;
+        }
+
+        .badge-vip {
+            background: linear-gradient(135deg, #000000 0%, #434343 100%);
+            color: #d4af37;
+            border: 1px solid var(--color-primary);
+        }
+
+        .badge-required {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .badge-optional {
+            background: rgba(23, 162, 184, 0.2);
+            color: #17a2b8;
+            border: 1px solid rgba(23, 162, 184, 0.3);
+        }
+
+        .badge-important {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--color-primary);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* ============================================
+           ALERTS
+           ============================================ */
+        .alert-premium {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-left: 4px solid var(--color-primary);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .alert-premium.alert-info {
+            border-left-color: var(--color-info);
+        }
+
+        .alert-premium.alert-warning {
+            border-left-color: #ffc107;
+        }
+
+        .alert-premium.alert-success {
+            border-left-color: var(--color-success);
+        }
+
+        .alert-premium.alert-danger {
+            border-left-color: var(--color-danger);
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .alert-info .alert-icon {
+            color: var(--color-info);
+        }
+
+        .alert-warning .alert-icon {
+            color: #ffc107;
+        }
+
+        .alert-success .alert-icon {
+            color: var(--color-success);
+        }
+
+        .alert-danger .alert-icon {
+            color: var(--color-danger);
+        }
+
+        /* ============================================
+           TABLES
+           ============================================ */
+        .table-premium-container {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .table-premium {
+            width: 100%;
+            margin: 0;
+            color: var(--color-offwhite);
+        }
+
+        .table-premium thead {
+            background: rgba(212, 175, 55, 0.1);
+            border-bottom: 2px solid var(--color-primary);
+        }
+
+        .table-premium thead th {
+            color: var(--color-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            border: none;
+        }
+
+        .table-premium tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            vertical-align: middle;
+        }
+
+        .table-premium tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-premium tbody tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        /* ============================================
+           COLOR PALETTE
+           ============================================ */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .color-swatch {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .color-preview {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        
+
+        .color-info {
+            padding: 1rem;
+        }
+
+        .color-name {
+            font-weight: 600;
+            color: var(--color-offwhite);
+            margin-bottom: 0.25rem;
+        }
+
+        .color-hex {
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           PROGRESS TRACKER
+           ============================================ */
+        .progress-tracker {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .progress-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            transition: all var(--transition-fast);
+        }
+
+        .progress-step:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .step-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--color-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .step-checkbox.checked {
+            background: var(--color-primary);
+        }
+
+        .step-checkbox.checked i {
+            color: var(--color-secondary);
+        }
+
+        .step-checkbox i {
+            font-size: 0.875rem;
+            color: transparent;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--color-offwhite);
+            margin-bottom: 0.25rem;
+        }
+
+        .step-description {
+            font-size: 0.875rem;
+            color: rgba(250, 249, 246, 0.6);
+        }
+
+        /* ============================================
+           ACCORDION
+           ============================================ */
+        .accordion-premium .accordion-item {
+            background: var(--color-glass);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .accordion-premium .accordion-button {
+            background: transparent;
+            color: var(--color-offwhite);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 1.25rem 1.5rem;
+            box-shadow: none;
+        }
+
+        .accordion-premium .accordion-button:not(.collapsed) {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--color-primary);
+        }
+
+        .accordion-premium .accordion-button::after {
+            filter: brightness(0) saturate(100%) invert(73%) sepia(60%) saturate(400%) hue-rotate(10deg) brightness(100%) contrast(90%);
+        }
+
+        .accordion-premium .accordion-button:focus {
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .accordion-premium .accordion-body {
+            background: transparent;
+            color: rgba(250, 249, 246, 0.8);
+            padding: 1.5rem;
+            border-top: 1px solid var(--color-glass-border);
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn-premium {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: var(--color-secondary);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+            color: var(--color-secondary);
+        }
+
+        .btn-outline-premium {
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+            border-radius: 10px;
+            padding: 0.7rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline-premium:hover {
+            background: var(--color-primary);
+            color: var(--color-secondary);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .premium-footer {
+            background: var(--color-glass);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--color-glass-border);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .footer-text {
+            color: rgba(250, 249, 246, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a {
+            color: rgba(250, 249, 246, 0.6);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-links a:hover {
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           SCROLL TO TOP BUTTON
+           ============================================ */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            color: var(--color-secondary);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--transition-normal);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-4px);
+        }
+
+        .scroll-top-btn i {
+            font-size: 1.25rem;
+        }
+
+        /* ============================================
+           PRINT STYLES
+           ============================================ */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .premium-header,
+            .scroll-top-btn,
+            .toc-container {
+                display: none;
+            }
+
+            .content-block {
+                break-inside: avoid;
+                border: 1px solid #ddd;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .toc-container {
+                position: static;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .header-logo h1 {
+                font-size: 1.75rem;
+            }
+
+            .content-block {
+                padding: 1.5rem;
+            }
+
+            .nav-premium {
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+            .color-palette {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+
+            .color-palette {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           ACCESSIBILITY
+           ============================================ */
+        *:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .card-premium,
+            .content-block,
+            .toc-container {
+                border-width: 2px;
+            }
+        }
+
+        /* ================================
+   SCROLLBAR PREMIUM ND COLOR
+   Google Chrome uniquement
+===================================*/
+
+/* Largeur de la barre */
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+/* Couleur de la piste (fond) */
+::-webkit-scrollbar-track {
+    background: #212529; /* noir/anthracite du thème */
+    border-radius: 10px;
+}
+
+/* Dégradé premium pour la barre */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffc107, #ff9800); /* jaune → orange */
+    border-radius: 10px;
+    border: 2px solid #343a40; /* gris foncé contrasté */
+    transition: 0.3s ease-in-out;
+}
+
+/* Effet hover premium (glow) */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff9800, #ffc107); /* inversion des couleurs */
+    box-shadow: 0 0 10px #ffc107;
+    border: 2px solid #6c757d; /* gris clair */
+}
+
+/* Coin si présent */
+::-webkit-scrollbar-corner {
+    background: #343a40;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Skip Link pour Accessibilité -->
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+
+    <!-- Header -->
+    <header class="premium-header" role="banner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4">
+                    <div class="header-logo">
+                        <h1>ND COLOR</h1>
+                        <p class="header-subtitle">Cahier des charges</p>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <nav class="nav-premium justify-content-lg-end" role="navigation" aria-label="Navigation principale">
+                        <a href="#presentation" class="nav-link">Présentation</a>
+                        <a href="#specifications" class="nav-link">Spécifications</a>
+                        <a href="#fonctionnalites" class="nav-link">Fonctionnalités</a>
+                        <a href="#design" class="nav-link">Design</a>
+                        <a href="#technique" class="nav-link">Technique</a>
+                        <a href="#livrables" class="nav-link">Livrables</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" aria-labelledby="hero-title">
+        <div class="container">
+            <span class="hero-badge">Formation DWWM - MODE 83</span>
+            <h2 id="hero-title" class="hero-title">
+                Cahier des charges<br>
+                <span>Application ND COLOR</span>
+            </h2>
+            <p class="hero-description">
+                Document technique complet pour la réalisation d'une application web de gestion 
+                des cartes de fidélité pour le salon de coiffure de luxe ND COLOR.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="#specifications" class="btn-premium">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Commencer
+                </a>
+                <a href="#checklist" class="btn-outline-premium">
+                    <i class="bi bi-check2-square"></i>
+                    Checklist
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="main-content" class="section">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar - Table of Contents -->
+                <aside class="col-lg-3 d-none d-lg-block">
+                    <div class="toc-container" role="navigation" aria-label="Table des matières">
+                        <h2 class="toc-title">
+                            <i class="bi bi-list-ul"></i>
+                            Sommaire
+                        </h2>
+                        <ul class="toc-list" id="toc-list">
+                            <li><a href="#presentation"><span class="toc-number">1</span> Présentation</a></li>
+                            <li><a href="#contexte"><span class="toc-number">2</span> Contexte</a></li>
+                            <li><a href="#objectifs"><span class="toc-number">3</span> Objectifs</a></li>
+                            <li><a href="#specifications"><span class="toc-number">4</span> Spécifications</a></li>
+                            <li><a href="#fonctionnalites"><span class="toc-number">5</span> Fonctionnalités</a></li>
+                            <li><a href="#design"><span class="toc-number">6</span> Design</a></li>
+                            <li><a href="#technique"><span class="toc-number">7</span> Technique</a></li>
+                            <li><a href="#accessibilite"><span class="toc-number">8</span> Accessibilité</a></li>
+                            <li><a href="#donnees"><span class="toc-number">9</span> Données</a></li>
+                            <li><a href="#livrables"><span class="toc-number">10</span> Livrables</a></li>
+                            <li><a href="#checklist"><span class="toc-number">11</span> Checklist</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Main Content Area -->
+                <div class="col-lg-9">
+                    <!-- Section 1: Présentation -->
+                    <article id="presentation" class="content-block" aria-labelledby="presentation-title">
+                        <h3 id="presentation-title">
+                            <span class="block-number">1</span>
+                            Présentation du projet
+                        </h3>
+                        
+                        <p>
+                            <strong>ND COLOR</strong> est une application web moderne de gestion des cartes de fidélité 
+                            destinée à un salon de coiffure situé à Draguignan. <br> Cette application permettra 
+                            de gérer efficacement sa clientèle et son programme de fidélité avec un design premium 
+                            reflétant l'image haut de gamme de l'établissement.
+                        </p>
+
+                        <h4>Informations générales</h4>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Nom du projet</strong></td>
+                                        <td>ND COLOR - Gestion cartes de fidélité</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Client</strong></td>
+                                        <td>Salon de coiffure ND COLOR, Draguignan</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Type d'application</strong></td>
+                                        <td>Application Web Single Page (SPA)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Technologies imposées</strong></td>
+                                        <td>HTML5, CSS3, Bootstrap 5.3.0, JavaScript Vanilla</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Stockage des données</strong></td>
+                                        <td>localStorage (navigateur)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+
+                    <!-- Section 2: Contexte -->
+                    <article id="contexte" class="content-block" aria-labelledby="contexte-title">
+                        <h3 id="contexte-title">
+                            <span class="block-number">2</span>
+                            Contexte et enjeux
+                        </h3>
+
+                        <p>
+                            Le salon ND COLOR souhaite moderniser sa gestion de la fidélité client. <br> Actuellement, 
+                            le suivi est effectué manuellement avec des cartes papier, ce qui engendre des pertes 
+                            d'informations et une expérience client sous-optimale.
+                        </p>
+
+                        <h4>Problématiques actuelles</h4>
+                        <ul>
+                            <li>Gestion manuelle chronophage des cartes de fidélité papier</li>
+                            <li>Perte fréquente d'informations clients</li>
+                            <li>Difficulté à identifier les clients les plus fidèles</li>
+                            <li>Absence de statistiques sur la clientèle</li>
+                            <li>Image de marque non reflétée dans les outils de gestion</li>
+                        </ul>
+
+                        <h4>Bénéfices attendus</h4>
+                        <ul>
+                            <li>Centralisation des données clients dans une interface unique</li>
+                            <li>Gain de temps significatif dans la gestion quotidienne</li>
+                            <li>Meilleure connaissance de la clientèle via les statistiques</li>
+                            <li>Fidélisation accrue grâce au système de points</li>
+                            <li>Image de marque premium renforcée</li>
+                        </ul>
+
+                        <div class="alert-premium alert-info" role="alert">
+                            <i class="bi bi-info-circle-fill alert-icon" aria-hidden="true"></i>
+                            <div>
+                                <strong>Note pédagogique :</strong> <br> Ce projet vous permet de mettre en pratique 
+                                les compétences CRUD (Create, Read, Update, Delete) essentielles pour tout 
+                                développeur web, tout en travaillant sur un design premium et une UX soignée.
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 3: Objectifs -->
+                    <article id="objectifs" class="content-block" aria-labelledby="objectifs-title">
+                        <h3 id="objectifs-title">
+                            <span class="block-number">3</span>
+                            Objectifs du projet
+                        </h3>
+
+                        <h4>Objectifs fonctionnels</h4>
+                        <ul>
+                            <li>Permettre l'ajout, la modification et la suppression de clients</li>
+                            <li>Gérer un système de points de fidélité avec 4 niveaux de cartes</li>
+                            <li>Proposer une recherche instantanée dans la liste des clients</li>
+                            <li>Afficher des statistiques en temps réel sur le tableau de bord</li>
+                            <li>Permettre l'export et l'import des données (JSON, CSV)</li>
+                        </ul>
+
+                        <h4>Objectifs techniques</h4>
+                        <ul>
+                            <li>Développer une SPA (Single Page Application) sans rechargement</li>
+                            <li>Utiliser le localStorage pour la persistance des données</li>
+                            <li>Implémenter une architecture JavaScript orientée objet (POO)</li>
+                            <li>Assurer un design responsive adapté à tous les écrans</li>
+                            <li>Respecter les normes d'accessibilité WCAG 2.1</li>
+                        </ul>
+
+                        <h4>Objectifs de qualité</h4>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <div class="card-icon mx-auto">
+                                        <i class="bi bi-speedometer2"></i>
+                                    </div>
+                                    <div class="card-title" style="font-size: 1.25rem;">100%</div>
+                                    <div class="card-text">Performance</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <div class="card-icon mx-auto">
+                                        <i class="bi bi-universal-access"></i>
+                                    </div>
+                                    <div class="card-title" style="font-size: 1.25rem;">100%</div>
+                                    <div class="card-text">Accessibilité</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <div class="card-icon mx-auto">
+                                        <i class="bi bi-shield-check"></i>
+                                    </div>
+                                    <div class="card-title" style="font-size: 1.25rem;">100%</div>
+                                    <div class="card-text">Bonnes pratiques</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <div class="card-icon mx-auto">
+                                        <i class="bi bi-search"></i>
+                                    </div>
+                                    <div class="card-title" style="font-size: 1.25rem;">100%</div>
+                                    <div class="card-text">SEO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 4: Spécifications -->
+                    <article id="specifications" class="content-block" aria-labelledby="specifications-title">
+                        <h3 id="specifications-title">
+                            <span class="block-number">4</span>
+                            Spécifications générales
+                        </h3>
+
+                        <h4>Architecture de l'application</h4>
+                        <p>L'application sera structurée en deux pages principales au sein d'un fichier HTML unique :</p>
+
+                        <div class="accordion accordion-premium" id="accordionPages">
+                            <div class="accordion-item">
+                                <h5 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#page1" aria-expanded="true" aria-controls="page1">
+                                        <i class="bi bi-key me-2"></i>
+                                        Page 1 : Écran de connexion
+                                    </button>
+                                </h5>
+                                <div id="page1" class="accordion-collapse collapse show" data-bs-parent="#accordionPages">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>Formulaire d'authentification avec identifiant et mot de passe</li>
+                                            <li>Validation des champs côté client</li>
+                                            <li>Message d'erreur personnalisé en cas d'échec</li>
+                                            <li>Design premium centré avec effet glassmorphism</li>
+                                            <li>Logo et nom du salon en vedette</li>
+                                        </ul>
+                                        <p><strong>Identifiants par défaut :</strong></p>
+                                        <ul>
+                                            <li>Identifiant : <code>admin</code></li>
+                                            <li>Mot de passe : <code>ndcolor2025</code></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h5 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#page2" aria-expanded="false" aria-controls="page2">
+                                        <i class="bi bi-speedometer2 me-2"></i>
+                                        Page 2 : Tableau de bord principal
+                                    </button>
+                                </h5>
+                                <div id="page2" class="accordion-collapse collapse" data-bs-parent="#accordionPages">
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li><strong>Header :</strong> Logo, navigation et bouton déconnexion</li>
+                                            <li><strong>Statistiques :</strong> 5 cartes affichant les compteurs en temps réel</li>
+                                            <li><strong>Barre de recherche :</strong> Filtrage instantané multicritères</li>
+                                            <li><strong>Tableau de données :</strong> Liste complète des clients avec tri et pagination</li>
+                                            <li><strong>Actions :</strong> Ajouter, modifier, supprimer, ajouter des points</li>
+                                            <li><strong>Export/Import :</strong> JSON et CSV</li>
+                                            <li><strong>Footer :</strong> Copyright et crédits</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Technologies requises</h4>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Technologie</th>
+                                        <th scope="col">Version</th>
+                                        <th scope="col">Utilisation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>HTML5</td>
+                                        <td>5.0</td>
+                                        <td>Structure sémantique de l'application</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CSS3</td>
+                                        <td>3.0</td>
+                                        <td>Styles personnalisés et animations</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bootstrap</td>
+                                        <td>5.3.0</td>
+                                        <td>Framework CSS responsive et composants</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bootstrap Icons</td>
+                                        <td>1.11.x</td>
+                                        <td>Icônes vectorielles</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>ES6+</td>
+                                        <td>Logique applicative et interactions</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Google Fonts</td>
+                                        <td>-</td>
+                                        <td>Typographies premium (Cormorant Garamond, Montserrat)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+
+                    <!-- Section 5: Fonctionnalités -->
+                    <article id="fonctionnalites" class="content-block" aria-labelledby="fonctionnalites-title">
+                        <h3 id="fonctionnalites-title">
+                            <span class="block-number">5</span>
+                            Fonctionnalités détaillées
+                        </h3>
+
+                        <h4>5.1 Authentification</h4>
+                        <p>Système de connexion simple avec gestion de session :</p>
+                        <ul>
+                            <li>Vérification des identifiants côté client</li>
+                            <li>Stockage de l'état de connexion dans <code>sessionStorage</code></li>
+                            <li>Déconnexion automatique à la fermeture du navigateur</li>
+                            <li>Protection de l'accès au dashboard sans authentification</li>
+                        </ul>
+
+                        <h4>5.2 Gestion des clients (CRUD)</h4>
+                        
+                        <div class="alert-premium alert-success" role="alert">
+                            <i class="bi bi-check-circle-fill alert-icon" aria-hidden="true"></i>
+                            <div>
+                                <strong>CREATE :</strong> Ajout d'un nouveau client via un formulaire modal
+                            </div>
+                        </div>
+
+                        <p>Champs du formulaire client :</p>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Champ</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Obligatoire</th>
+                                        <th scope="col">Validation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Nom</td>
+                                        <td>Texte</td>
+                                        <td><span class="badge-premium badge-required">Oui</span></td>
+                                        <td>Min. 2 caractères</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prénom</td>
+                                        <td>Texte</td>
+                                        <td><span class="badge-premium badge-required">Oui</span></td>
+                                        <td>Min. 2 caractères</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Téléphone</td>
+                                        <td>Téléphone</td>
+                                        <td><span class="badge-premium badge-required">Oui</span></td>
+                                        <td>Format français (10 chiffres)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>Email</td>
+                                        <td><span class="badge-premium badge-optional">Non</span></td>
+                                        <td>Format email valide</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Points</td>
+                                        <td>Nombre</td>
+                                        <td><span class="badge-premium badge-required">Oui</span></td>
+                                        <td>Entier ≥ 0, défaut : 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date création</td>
+                                        <td>Date</td>
+                                        <td><span class="badge-premium badge-important">Auto</span></td>
+                                        <td>Générée automatiquement</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>5.3 Système de cartes de fidélité</h4>
+                        <p>4 niveaux de cartes attribués automatiquement selon le nombre de points :</p>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <span class="badge-premium badge-bronze mb-3">Bronze</span>
+                                    <p class="card-text">0 - 99 points</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <span class="badge-premium badge-silver mb-3">Silver</span>
+                                    <p class="card-text">100 - 299 points</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <span class="badge-premium badge-gold mb-3">Gold</span>
+                                    <p class="card-text">300 - 599 points</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card-premium text-center">
+                                    <span class="badge-premium badge-vip mb-3">VIP Platinum</span>
+                                    <p class="card-text">600+ points</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>5.4 Recherche et filtrage</h4>
+                        <ul>
+                            <li>Recherche en temps réel (keyup event)</li>
+                            <li>Filtrage multicritères : nom, prénom, email, téléphone</li>
+                            <li>Insensible à la casse</li>
+                            <li>Affichage des résultats instantané</li>
+                        </ul>
+
+                        <h4>5.5 Tri des colonnes</h4>
+                        <ul>
+                            <li>Tri ascendant/descendant sur chaque colonne</li>
+                            <li>Indicateur visuel de la direction du tri</li>
+                            <li>Tri alphabétique pour les textes</li>
+                            <li>Tri numérique pour les points</li>
+                            <li>Tri chronologique pour les dates</li>
+                        </ul>
+
+                        <h4>5.6 Pagination</h4>
+                        <ul>
+                            <li>Options d'affichage : 5, 10, 25, 50, 100 éléments par page</li>
+                            <li>Navigation : première, précédente, numéros de page, suivante, dernière</li>
+                            <li>Indicateur de position (ex: "Affichage 1-10 sur 45")</li>
+                            <li>Accès direct à une page spécifique</li>
+                        </ul>
+
+                        <h4>5.7 Export/Import</h4>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card-premium">
+                                    <div class="card-icon">
+                                        <i class="bi bi-download"></i>
+                                    </div>
+                                    <h5 class="card-title">Export</h5>
+                                    <ul class="card-text">
+                                        <li><strong>JSON :</strong> Export complet des données</li>
+                                        <li><strong>CSV :</strong> Compatible Excel/LibreOffice</li>
+                                        <li>Nom de fichier avec date automatique</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-premium">
+                                    <div class="card-icon">
+                                        <i class="bi bi-upload"></i>
+                                    </div>
+                                    <h5 class="card-title">Import</h5>
+                                    <ul class="card-text">
+                                        <li>Import de fichiers JSON uniquement</li>
+                                        <li>Choix : Fusionner ou Remplacer</li>
+                                        <li>Validation du format des données</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>5.8 Statistiques temps réel</h4>
+                        <p>Le tableau de bord affiche 5 cartes de statistiques :</p>
+                        <ol>
+                            <li><strong>Total clients :</strong> Nombre total de clients enregistrés</li>
+                            <li><strong>Cartes bronze :</strong> Nombre de clients avec carte Bronze</li>
+                            <li><strong>Cartes silver :</strong> Nombre de clients avec carte Silver</li>
+                            <li><strong>Cartes gold :</strong> Nombre de clients avec carte Gold</li>
+                            <li><strong>Cartes VIP platinum :</strong> Nombre de clients VIP</li>
+                        </ol>
+                    </article>
+
+                    <!-- Section 6: Design -->
+                    <article id="design" class="content-block" aria-labelledby="design-title">
+                        <h3 id="design-title">
+                            <span class="block-number">6</span>
+                            Charte graphique et design
+                        </h3>
+
+                        <h4>6.1 Palette de couleurs</h4>
+                        <p>La palette reflète le positionnement luxueux du salon avec des tons or et noir :</p>
+
+                        <div class="color-palette">
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #d4af37; color: #0a0a0a;">Primary</div>
+                                <div class="color-info">
+                                    <div class="color-name">Or classique (Primary)</div>
+                                    <div class="color-hex">#d4af37</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #f5d576; color: #0a0a0a;">Primary Light</div>
+                                <div class="color-info">
+                                    <div class="color-name">Or clair</div>
+                                    <div class="color-hex">#f5d576</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #b8941f; color: #faf9f6;">Primary Dark</div>
+                                <div class="color-info">
+                                    <div class="color-name">Or foncé</div>
+                                    <div class="color-hex">#b8941f</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #0a0a0a; color: #faf9f6;">Secondary</div>
+                                <div class="color-info">
+                                    <div class="color-name">Noir profond</div>
+                                    <div class="color-hex">#0a0a0a</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #1a1a1a; color: #faf9f6;">Dark</div>
+                                <div class="color-info">
+                                    <div class="color-name">Noir charbon</div>
+                                    <div class="color-hex">#1a1a1a</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #faf9f6; color: #0a0a0a;">Off-White</div>
+                                <div class="color-info">
+                                    <div class="color-name">Blanc cassé</div>
+                                    <div class="color-hex">#faf9f6</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #cd7f32; color: #faf9f6;">Bronze</div>
+                                <div class="color-info">
+                                    <div class="color-name">Bronze (carte)</div>
+                                    <div class="color-hex">#cd7f32</div>
+                                </div>
+                            </div>
+                            <div class="color-swatch">
+                                <div class="color-preview" style="background: #c0c0c0; color: #0a0a0a;">Silver</div>
+                                <div class="color-info">
+                                    <div class="color-name">Silver (carte)</div>
+                                    <div class="color-hex">#c0c0c0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>6.2 Typographies</h4>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Police</th>
+                                        <th scope="col">Utilisation</th>
+                                        <th scope="col">Graisses</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond</strong></td>
+                                        <td>Titres, Logo, Éléments premium</td>
+                                        <td>400, 600, 700</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong style="font-family: 'Montserrat', sans-serif;">Montserrat</strong></td>
+                                        <td>Corps de texte, Boutons, Labels</td>
+                                        <td>300, 400, 500, 600, 700</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>6.3 Effets visuels</h4>
+                        <ul>
+                            <li><strong>Glassmorphism :</strong> Effet de verre dépoli avec <code>backdrop-filter: blur()</code></li>
+                            <li><strong>Dégradés :</strong> Utilisation de <code>linear-gradient()</code> pour les boutons et accents</li>
+                            <li><strong>Ombres :</strong> Ombres portées subtiles pour la profondeur</li>
+                            <li><strong>Animations :</strong> Transitions fluides avec <code>cubic-bezier()</code></li>
+                            <li><strong>Hover states :</strong> Effets au survol sur tous les éléments interactifs</li>
+                        </ul>
+
+                        <h4>6.4 Variables CSS requises</h4>
+                        <div class="code-block" data-language="CSS">
+                            <code>:root {
+    /* Couleurs principales */
+    --color-primary: #d4af37;
+    --color-primary-light: #f5d576;
+    --color-primary-dark: #b8941f;
+    --color-secondary: #0a0a0a;
+    --color-dark: #1a1a1a;
+    --color-offwhite: #faf9f6;
+    
+    /* Effet glassmorphism */
+    --color-glass: rgba(250, 249, 246, 0.08);
+    --color-glass-border: rgba(212, 175, 55, 0.2);
+    
+    /* Typographies */
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Montserrat', sans-serif;
+    
+    /* Ombres */
+    --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
+    
+    /* Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}</code>
+                        </div>
+                    </article>
+
+                    <!-- Section 7: Technique -->
+                    <article id="technique" class="content-block" aria-labelledby="technique-title">
+                        <h3 id="technique-title">
+                            <span class="block-number">7</span>
+                            Spécifications techniques
+                        </h3>
+
+                        <h4>7.1 Architecture JavaScript (POO)</h4>
+                        <p>L'application doit être structurée avec des classes JavaScript ES6+ :</p>
+
+                        <div class="code-block" data-language="JavaScript">
+                            <code>// Classes principales à implémenter
+
+class AuthManager {
+    // Gestion de l'authentification
+    // Méthodes: isAuthenticated(), login(), logout()
+}
+
+class Client {
+    // Modèle de données client
+    // Propriétés: id, firstName, lastName, phone, email, points, cardType, createdDate
+}
+
+class ClientManager {
+    // Gestion CRUD des clients
+    // Méthodes: add(), update(), delete(), getAll(), getById(), search()
+}
+
+class UIManager {
+    // Gestion de l'interface utilisateur
+    // Méthodes: render(), showModal(), updateStats(), handleSort(), handlePagination()
+}</code>
+                        </div>
+
+                        <h4>7.2 Structure du localStorage</h4>
+                        <div class="code-block" data-language="JSON">
+                            <code>{
+    "ndcolor_auth": "true",  // sessionStorage
+    "ndcolor_clients": [     // localStorage
+        {
+            "id": "uuid-v4",
+            "firstName": "Marie",
+            "lastName": "Dupont",
+            "phone": "0612345678",
+            "email": "marie@email.com",
+            "points": 150,
+            "cardType": "Silver",
+            "createdDate": "2025-01-15"
+        }
+    ]
+}</code>
+                        </div>
+
+                        <h4>7.3 Modals Bootstrap à implémenter</h4>
+                        <ul>
+                            <li><strong>Modal client :</strong> Formulaire d'ajout/modification</li>
+                            <li><strong>Modal points :</strong> Ajout de points à un client</li>
+                            <li><strong>Modal confirmation :</strong> Confirmation de suppression</li>
+                            <li><strong>Modal aide (guide d'utilisations) :</strong> Mode d'emploi de l'application</li>
+                        </ul>
+
+                        <h4>7.4 Events à gérer</h4>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Élément</th>
+                                        <th scope="col">Event</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Formulaire login</td>
+                                        <td>submit</td>
+                                        <td>Authentification</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Champ recherche</td>
+                                        <td>keyup</td>
+                                        <td>Filtrage en temps réel</td>
+                                    </tr>
+                                    <tr>
+                                        <td>En-têtes tableau</td>
+                                        <td>click</td>
+                                        <td>Tri des colonnes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Boutons pagination</td>
+                                        <td>click</td>
+                                        <td>Navigation entre pages</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Boutons action</td>
+                                        <td>click</td>
+                                        <td>CRUD operations</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Formulaire client</td>
+                                        <td>submit</td>
+                                        <td>Sauvegarde client</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>7.5 Génération d'ID unique</h4>
+                        <div class="code-block" data-language="JavaScript">
+                            <code>// Méthode pour générer un UUID v4
+generateId() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}</code>
+                        </div>
+                    </article>
+
+                    <!-- Section 8: Accessibilité -->
+                    <article id="accessibilite" class="content-block" aria-labelledby="accessibilite-title">
+                        <h3 id="accessibilite-title">
+                            <span class="block-number">8</span>
+                            Accessibilité (WCAG 2.1)
+                        </h3>
+
+                        <div class="alert-premium alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill alert-icon" aria-hidden="true"></i>
+                            <div>
+                                <strong>Objectif Lighthouse :</strong> L'application doit obtenir un score de 100% 
+                                en accessibilité lors de l'audit Lighthouse de Chrome DevTools.
+                            </div>
+                        </div>
+
+                        <h4>8.1 Structure sémantique HTML5</h4>
+                        <ul>
+                            <li>Utiliser les balises <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code></li>
+                            <li>Hiérarchie correcte des titres (h1 → h2 → h3...)</li>
+                            <li>Attributs <code>role</code> pour les régions importantes</li>
+                            <li>Attribut <code>lang="fr"</code> sur la balise <code>&lt;html&gt;</code></li>
+                        </ul>
+
+                        <h4>8.2 Navigation au clavier</h4>
+                        <ul>
+                            <li>Lien "Skip to content" en premier élément focusable</li>
+                            <li>Ordre de tabulation logique (<code>tabindex</code>)</li>
+                            <li>Indicateur de focus visible (<code>:focus-visible</code>)</li>
+                            <li>Tous les éléments interactifs accessibles au clavier</li>
+                        </ul>
+
+                        <h4>8.3 ARIA labels</h4>
+                        <div class="code-block" data-language="HTML">
+                            <code>&lt;!-- Exemples d'attributs ARIA requis --&gt;
+&lt;nav role="navigation" aria-label="Navigation principale"&gt;
+&lt;main id="main-content" role="main"&gt;
+&lt;button aria-label="Ajouter un nouveau client"&gt;
+&lt;input aria-label="Rechercher un client"&gt;
+&lt;table aria-describedby="tableDescription"&gt;
+&lt;div role="alert" aria-live="polite"&gt;</code>
+                        </div>
+
+                        <h4>8.4 Formulaires accessibles</h4>
+                        <ul>
+                            <li>Labels associés à chaque champ (<code>&lt;label for="..."&gt;</code>)</li>
+                            <li>Messages d'erreur explicites</li>
+                            <li>Attributs <code>required</code> et <code>aria-required</code></li>
+                            <li>Attributs <code>autocomplete</code> appropriés</li>
+                        </ul>
+
+                        <h4>8.5 Contrastes et couleurs</h4>
+                        <ul>
+                            <li>Ratio de contraste minimum 4.5:1 pour le texte normal</li>
+                            <li>Ratio de contraste minimum 3:1 pour les grands textes</li>
+                            <li>Information non transmise uniquement par la couleur</li>
+                        </ul>
+
+                        <h4>8.6 Préférences utilisateur</h4>
+                        <div class="code-block" data-language="CSS">
+                            <code>/* Respecter les préférences de réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}</code>
+                        </div>
+                    </article>
+
+                    <!-- Section 9: Données -->
+                    <article id="donnees" class="content-block" aria-labelledby="donnees-title">
+                        <h3 id="donnees-title">
+                            <span class="block-number">9</span>
+                            Modèle de données
+                        </h3>
+
+                        <h4>9.1 Structure d'un client</h4>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Propriété</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Exemple</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>id</code></td>
+                                        <td>String (UUID)</td>
+                                        <td>Identifiant unique</td>
+                                        <td>"a1b2c3d4-..."</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>lastName</code></td>
+                                        <td>String</td>
+                                        <td>Nom de famille</td>
+                                        <td>"Dupont"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>firstName</code></td>
+                                        <td>String</td>
+                                        <td>Prénom</td>
+                                        <td>"Marie"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>phone</code></td>
+                                        <td>String</td>
+                                        <td>Numéro de téléphone</td>
+                                        <td>"0612345678"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>email</code></td>
+                                        <td>String</td>
+                                        <td>Adresse email (optionnel)</td>
+                                        <td>"marie@email.com"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>points</code></td>
+                                        <td>Number</td>
+                                        <td>Points de fidélité</td>
+                                        <td>150</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>cardType</code></td>
+                                        <td>String</td>
+                                        <td>Type de carte (calculé)</td>
+                                        <td>"Silver"</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>createdDate</code></td>
+                                        <td>String (ISO)</td>
+                                        <td>Date de création</td>
+                                        <td>"2025-01-15"</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>9.2 Calcul automatique du type de carte</h4>
+                        <div class="code-block" data-language="JavaScript">
+                            <code>// Fonction de calcul du type de carte selon les points
+getCardType(points) {
+    if (points >= 600) return 'VIP Platinum';
+    if (points >= 300) return 'Gold';
+    if (points >= 100) return 'Silver';
+    return 'Bronze';
+}</code>
+                        </div>
+
+                        <h4>9.3 Jeu de données de test</h4>
+                        <p>Voici un exemple de données pour tester l'application :</p>
+                        <div class="code-block" data-language="JSON">
+                            <code>[
+    {
+        "id": "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+        "lastName": "Martin",
+        "firstName": "Sophie",
+        "phone": "0687654321",
+        "email": "sophie.martin@email.com",
+        "points": 45,
+        "cardType": "Bronze",
+        "createdDate": "2025-01-10"
+    },
+    {
+        "id": "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
+        "lastName": "Bernard",
+        "firstName": "Jean",
+        "phone": "0654321987",
+        "email": "jean.bernard@email.com",
+        "points": 180,
+        "cardType": "Silver",
+        "createdDate": "2024-12-05"
+    },
+    {
+        "id": "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
+        "lastName": "Dubois",
+        "firstName": "Claire",
+        "phone": "0698765432",
+        "email": "claire.dubois@email.com",
+        "points": 420,
+        "cardType": "Gold",
+        "createdDate": "2024-09-20"
+    },
+    {
+        "id": "4d5e6f7g-8h9i-0j1k-2l3m-4n5o6p7q8r9s",
+        "lastName": "Moreau",
+        "firstName": "Philippe",
+        "phone": "0612349876",
+        "email": "philippe.moreau@email.com",
+        "points": 750,
+        "cardType": "VIP Platinum",
+        "createdDate": "2024-06-15"
+    }
+]</code>
+                        </div>
+                    </article>
+
+                    <!-- Section 10: Livrables -->
+                    <article id="livrables" class="content-block" aria-labelledby="livrables-title">
+                        <h3 id="livrables-title">
+                            <span class="block-number">10</span>
+                            Livrables attendus
+                        </h3>
+
+                        <h4>10.1 Fichiers à rendre</h4>
+                        <div class="table-premium-container">
+                            <table class="table-premium">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Fichier</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Obligatoire</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>index.html</code></td>
+                                        <td>Fichier unique contenant HTML, CSS et JavaScript</td>
+                                        <td><span class="badge-premium badge-required">Oui</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>README.md</code></td>
+                                        <td>Documentation du projet</td>
+                                        <td><span class="badge-premium badge-required">Oui</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>data-test.json</code></td>
+                                        <td>Jeu de données de test</td>
+                                        <td><span class="badge-premium badge-optional">Non</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>screenshots/</code></td>
+                                        <td>Captures d'écran de l'application</td>
+                                        <td><span class="badge-premium badge-optional">Non</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>10.2 Critères de validation</h4>
+                        <ul>
+                            <li>Code HTML valide (validation W3C)</li>
+                            <li>Code CSS valide sans erreurs</li>
+                            <li>Code JavaScript fonctionnel sans erreurs console</li>
+                            <li>Application responsive (mobile, tablette, desktop)</li>
+                            <li>Score Lighthouse Performance : 100%</li>
+                            <li>Score Lighthouse Accessibilité : 100%</li>
+                            <li>Score Lighthouse Bonnes Pratiques : 100%</li>
+                            <li>Score Lighthouse SEO : 100%</li>
+                            <li>Toutes les fonctionnalités opérationnelles</li>
+                        </ul>
+
+                        <h4>10.3 Délai et présentation</h4>
+                        <div class="alert-premium" role="alert">
+                            <i class="bi bi-calendar-event alert-icon" aria-hidden="true"></i>
+                            <div>
+                                <strong>À définir avec votre formateur.</strong><br>
+                                Une présentation orale de 30 minutes sera organisée pour démontrer 
+                                les fonctionnalités et expliquer les choix techniques.
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 11: Checklist -->
+<article id="checklist" class="content-block" aria-labelledby="checklist-title">
+    <h3 id="checklist-title">
+        <span class="block-number">11</span>
+        Checklist de développement
+    </h3>
+
+    <p>Utilisez cette checklist pour suivre votre progression :</p>
+
+    <div class="progress-tracker">
+        <h4 class="progress-title">
+            <i class="bi bi-check2-all"></i>
+            Étapes de réalisation
+        </h4>
+        <div class="progress-steps" id="checklistSteps">
+            <!-- Étape 1 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-1">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-1">1. Structure HTML de base</div>
+                    <div class="step-description">Créer le squelette HTML5 avec les balises sémantiques</div>
+                </div>
+            </div>
+            <!-- Étape 2 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-2">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-2">2. Intégration Bootstrap 5.3.0</div>
+                    <div class="step-description">Ajouter Bootstrap CSS et JS via CDN</div>
+                </div>
+            </div>
+            <!-- Étape 3 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-3">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-3">3. Page de connexion</div>
+                    <div class="step-description">Formulaire d'authentification avec validation</div>
+                </div>
+            </div>
+            <!-- Étape 4 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-4">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-4">4. Header et navigation</div>
+                    <div class="step-description">Logo, menu et boutons d'action</div>
+                </div>
+            </div>
+            <!-- Étape 5 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-5">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-5">5. Cartes statistiques</div>
+                    <div class="step-description">5 cartes avec compteurs dynamiques</div>
+                </div>
+            </div>
+            <!-- Étape 6 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-6">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-6">6. Tableau des clients</div>
+                    <div class="step-description">Structure du tableau avec en-têtes triables</div>
+                </div>
+            </div>
+            <!-- Étape 7 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-7">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-7">7. Modals Bootstrap</div>
+                    <div class="step-description">Modal client, points, confirmation, aide</div>
+                </div>
+            </div>
+            <!-- Étape 8 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-8">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-8">8. Styles CSS personnalisés</div>
+                    <div class="step-description">Variables CSS, thème premium, animations</div>
+                </div>
+            </div>
+            <!-- Étape 9 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-9">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-9">9. Classes JavaScript</div>
+                    <div class="step-description">AuthManager, Client, ClientManager, UIManager</div>
+                </div>
+            </div>
+            <!-- Étape 10 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-10">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-10">10. Fonctionnalités CRUD</div>
+                    <div class="step-description">Ajouter, modifier, supprimer des clients</div>
+                </div>
+            </div>
+            <!-- Étape 11 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-11">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-11">11. Recherche et tri</div>
+                    <div class="step-description">Filtrage temps réel et tri des colonnes</div>
+                </div>
+            </div>
+            <!-- Étape 12 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-12">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-12">12. Pagination</div>
+                    <div class="step-description">Navigation entre les pages de résultats</div>
+                </div>
+            </div>
+            <!-- Étape 13 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-13">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-13">13. Export JSON/CSV</div>
+                    <div class="step-description">Téléchargement des données</div>
+                </div>
+            </div>
+            <!-- Étape 14 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-14">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-14">14. Import JSON</div>
+                    <div class="step-description">Chargement et fusion des données</div>
+                </div>
+            </div>
+            <!-- Étape 15 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-15">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-15">15. Responsive design</div>
+                    <div class="step-description">Adaptation mobile et tablette</div>
+                </div>
+            </div>
+            <!-- Étape 16 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-16">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-16">16. Accessibilité WCAG</div>
+                    <div class="step-description">ARIA labels, focus, contraste</div>
+                </div>
+            </div>
+            <!-- Étape 17 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-17">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-17">17. Optimisation Lighthouse</div>
+                    <div class="step-description">Atteindre 100% sur les 4 critères</div>
+                </div>
+            </div>
+            <!-- Étape 18 -->
+            <div class="progress-step">
+                <div class="step-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="step-title-18">
+                    <i class="bi bi-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-title" id="step-title-18">18. Tests et corrections</div>
+                    <div class="step-description">Tests fonctionnels et debug</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+                    <!-- Ressources -->
+                    <article class="content-block" aria-labelledby="ressources-title">
+                        <h3 id="ressources-title">
+                            <span class="block-number"><i class="bi bi-link-45deg"></i></span>
+                            Ressources utiles
+                        </h3>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card-premium">
+                                    <h4 class="card-title">Documentation</h4>
+                                    <ul class="card-text">
+                                        <li><a href="https://getbootstrap.com/docs/5.3/" target="_blank" rel="noopener noreferrer">Bootstrap 5.3 Documentation</a></li>
+                                        <li><a href="https://icons.getbootstrap.com/" target="_blank" rel="noopener noreferrer">Bootstrap Icons</a></li>
+                                        <li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer">MDN JavaScript</a></li>
+                                        <li><a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank" rel="noopener noreferrer">WCAG 2.1 Quick Reference</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-premium">
+                                    <h4 class="card-title">Outils</h4>
+                                    <ul class="card-text">
+                                        <li><a href="https://validator.w3.org/" target="_blank" rel="noopener noreferrer">W3C HTML Validator</a></li>
+                                        <li><a href="https://jigsaw.w3.org/css-validator/" target="_blank" rel="noopener noreferrer">W3C CSS Validator</a></li>
+                                        <li><a href="https://wave.webaim.org/" target="_blank" rel="noopener noreferrer">WAVE Accessibility Tool</a></li>
+                                        <li><a href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer">Google Fonts</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="premium-footer" role="contentinfo">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <a href="#" class="footer-brand">ND COLOR</a>
+                    <p class="footer-text mt-2 mb-0">
+                        Cahier des charges - Formation Développeur Web et Web Mobile
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="footer-text mb-1">
+                        © 2025 <strong>MODE 83</strong> - Centre de formation du numérique et des inovations
+                    </p>
+                    <p class="footer-text footer-links mb-0">
+                        <a href="#presentation">Présentation</a> • 
+                        <a href="#fonctionnalites">Fonctionnalités</a> • 
+                        <a href="#checklist">Checklist</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut de page" title="Retour en haut">
+        <i class="bi bi-chevron-up" aria-hidden="true"></i>
+    </button>
+
+    <!-- Bootstrap 5.3.0 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+    <script>
+        /**
+         * ============================================
+         * CAHIER DES CHARGES ND COLOR - SCRIPTS
+         * ============================================
+         */
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // ============================================
+            // SCROLL TO TOP BUTTON
+            // ============================================
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            }, { passive: true });
+
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // ============================================
+            // TABLE OF CONTENTS - ACTIVE STATE
+            // ============================================
+            const tocLinks = document.querySelectorAll('.toc-list a');
+            const sections = document.querySelectorAll('article[id]');
+
+            function updateActiveLink() {
+                let currentSection = '';
+                
+                sections.forEach(function(section) {
+                    const sectionTop = section.offsetTop - 150;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (window.pageYOffset >= sectionTop && 
+                        window.pageYOffset < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                tocLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveLink, { passive: true });
+            updateActiveLink();
+
+            // ============================================
+            // NAVIGATION - ACTIVE STATE
+            // ============================================
+            const navLinks = document.querySelectorAll('.nav-premium .nav-link');
+
+            function updateNavActive() {
+                let currentSection = '';
+                
+                sections.forEach(function(section) {
+                    const sectionTop = section.offsetTop - 150;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (window.pageYOffset >= sectionTop && 
+                        window.pageYOffset < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href');
+                    if (href && href.substring(1) === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateNavActive, { passive: true });
+
+            // ============================================
+            // CHECKLIST FUNCTIONALITY
+            // ============================================
+            const checkboxes = document.querySelectorAll('.step-checkbox');
+
+            // Charger l'état sauvegardé
+            const savedState = JSON.parse(localStorage.getItem('ndcolor_checklist') || '{}');
+
+            checkboxes.forEach(function(checkbox, index) {
+                // Restaurer l'état
+                if (savedState[index]) {
+                    checkbox.classList.add('checked');
+                    checkbox.setAttribute('aria-checked', 'true');
+                }
+
+                // Gérer le clic
+                checkbox.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                    const isChecked = this.classList.contains('checked');
+                    this.setAttribute('aria-checked', isChecked.toString());
+                    
+                    // Sauvegarder l'état
+                    savedState[index] = isChecked;
+                    localStorage.setItem('ndcolor_checklist', JSON.stringify(savedState));
+                });
+
+                // Gérer le clavier
+                checkbox.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+
+            // ============================================
+            // SMOOTH SCROLL FOR ANCHOR LINKS
+            // ============================================
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        e.preventDefault();
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            const headerOffset = 100;
+                            const elementPosition = target.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+
+                            // Update focus for accessibility
+                            target.setAttribute('tabindex', '-1');
+                            target.focus();
+                        }
+                    }
+                });
+            });
+
+            // ============================================
+            // PRINT FUNCTIONALITY
+            // ============================================
+            // Permettre l'impression via Ctrl+P
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'p') {
+                    // Le navigateur gère l'impression nativement
+                    // Les styles @media print s'appliqueront
+                }
+            });
+
+            // ============================================
+            // CONSOLE WELCOME MESSAGE
+            // ============================================
+            console.log('%c📋 Cahier des charges ND COLOR', 'color: #d4af37; font-size: 18px; font-weight: bold;');
+            console.log('%cFormation Développeur Web - MODE 83', 'color: #f5d576; font-size: 12px;');
+            console.log('%cBonne chance pour votre projet ! 🚀', 'color: #faf9f6; font-size: 12px;');
+        });
+    </script>
+</body>
+</html>
